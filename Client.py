@@ -2,17 +2,15 @@ from tkinter import *
 from tkinter import scrolledtext, messagebox
 import sys, socket, select, _thread
  
-#def connect(host, port):
 running = False
 
 def send():
    data = message.get()
-   #print(data)
    try:
       s.send(data.encode())
    except:
       error = messagebox.showinfo('Disconnected', 'Server is not active')
-      exit()
+      exit(1)
    response.delete(0, END)
    chat.config(state=NORMAL)
    chat.insert(END ,'<You>' + data + '\n')
