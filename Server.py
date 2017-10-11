@@ -16,18 +16,17 @@ sock_list.append(server_socket)
 
 def broadcast(data, sock, group):
     for socket in sock_list:
-        if socket != sock and socket != server_socket:
-            if player_maps[socket][0] == group:
-                try:
-                    socket.send(('<'+player_maps[sock][1]+'> '+data).encode())
-                except:
-                    socket.close()
-                    if socket in sock_list:
-                        user = player_maps[socket][1]
-                        del player_maps[socket]
-                        broadcast_to_all()
-                        sock_list.remove(socket)
-                        broadcast_offline(user, group)
+        if socket not in(sock, server_socket) and player_maps[socket][0] == group:
+            try:
+                socket.send(('<'+player_maps[sock][1]+'> '+data).encode())
+            except:
+                socket.close()
+                if socket in sock_list:
+                    user = player_maps[socket][1]
+                    del player_maps[socket]
+                    broadcast_to_all()
+                    sock_list.remove(socket)
+                    broadcast_offline(user, group)
 
 def broadcast_offline(user, group):
     for socket in sock_list:
